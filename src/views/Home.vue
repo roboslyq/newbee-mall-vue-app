@@ -9,63 +9,44 @@
 -->
 
 <template>
-  <div>
-    <header class="home-header wrap" :class="{'active' : headerScroll}">
-        <router-link tag="i" to="./category"><i class="nbicon nbmenu2"></i></router-link>
-        <div class="header-search">
-            <span class="app-name">新蜂商城</span>
-            <i class="iconfont icon-search"></i>
-            <router-link tag="span" class="search-title" to="./product-list?from=home">山河无恙，人间皆安</router-link>
-        </div>
-        <router-link class="login" tag="span" to="./login" v-if="!isLogin">登录</router-link>
-        <router-link class="login" tag="span" to="./user" v-else>
-          <van-icon name="manager-o" />
-        </router-link>
-    </header>
+  <div id="box">
     <nav-bar></nav-bar>
-    <swiper :list="swiperList"></swiper>
-    <div class="category-list">
-      <div v-for="item in categoryList" v-bind:key="item.categoryId">
-        <img :src="item.imgUrl">
-        <span>{{item.name}}</span>
+      <div id="banner">
+        <img src="../assets/gzzc.jpg" alt="广州资产" width="100%" height="100%"/>
       </div>
-    </div>
-    <div class="good">
-      <header class="good-header">新品上线</header>
-      <div class="good-box">
-        <div class="good-item" v-for="item in newGoodses" :key="item.goodsId" @click="goToDetail(item)">
-          <img :src="prefix(item.goodsCoverImg)" alt="">
-          <div class="good-desc">
-            <div class="title">{{ item.goodsName }}</div>
-            <div class="price">¥ {{ item.sellingPrice }}</div>
+      <div class="category-list">
+          <div v-for="item in categoryList" v-bind:key="item.categoryId">
+            <img :src="item.imgUrl">
+            <span>{{item.name}}</span>
           </div>
-        </div>
       </div>
-    </div>
-    <div class="good">
-      <header class="good-header">热门商品</header>
-      <div class="good-box">
-        <div class="good-item" v-for="item in hots" :key="item.goodsId" @click="goToDetail(item)">
-          <img :src="prefix(item.goodsCoverImg)" alt="">
-          <div class="good-desc">
-            <div class="title">{{ item.goodsName }}</div>
-            <div class="price">¥ {{ item.sellingPrice }}</div>
+      <br/>
+      <div id="main">
+        <!--左边区域-->
+        <div id="left">
+           <div>业务规模</div>
+           <div style="color:blue;font-size:15px;">9999999999.00万</div>
+           <br/>
+           <div>
+              <div><span>20.0</span><span style="float:right;">20.0</span> </div>
+              <div><span>当月</span><span style="float:right;">当季</span> </div>
+            </div>
           </div>
-        </div>
+        <div id="right">
+           <div>业务规模</div>
+           <div style="color:blue;font-size:15px;">9999999999.00万</div>
+           <br/>
+           <div>
+              <div><span>20.0</span><span style="float:right;">20.0</span> </div>
+              <div><span>当月</span><span style="float:right;">当季</span> </div>
+            </div>
+          </div>      
       </div>
-    </div>
-    <div class="good" :style="{ paddingBottom: '100px'}">
-      <header class="good-header">最新推荐</header>
-      <div class="good-box">
-        <div class="good-item" v-for="item in recommends" :key="item.goodsId" @click="goToDetail(item)">
-          <img :src="prefix(item.goodsCoverImg)" alt="">
-          <div class="good-desc">
-            <div class="title">{{ item.goodsName }}</div>
-            <div class="price">¥ {{ item.sellingPrice }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <div id="myChart" :style="{width: '300px', height: '300px' ,margin_top:'30px'}"></div>
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <van-cell v-for="item in list" :key="item" :title="item" />
+      </van-list>
+      <div id="footer"> footer </div>
   </div>
 </template>
 
@@ -76,10 +57,20 @@ import { getHome } from '../service/home'
 import { getUserInfo } from '../service/user'
 import { getLocal } from '@/common/js/utils'
 import { Toast } from 'vant'
+import NavBar from '../components/NavBar.vue'
+// import { List } from 'vant';
+
 export default {
   name: 'home',
+  components: {
+    navBar,
+    // List
+  },
   data() {
     return {
+      list: [],
+      loading: false,
+      finished: false,
       swiperList: [],
       isLogin: false,
       headerScroll: false,
@@ -127,115 +118,85 @@ export default {
             name: '全部',
             imgUrl: '//s.weituibao.com/1583585285470/qb.png',
             categoryId: 100010
-          }
+          } 
       ],
     }
   },
-  components: {
-    navBar,
-    swiper
-  },
+
   async mounted() {
     const token = getLocal('token')
     if (token) {
       this.isLogin = true
     }
-    window.addEventListener('scroll', this.pageScroll)
-    Toast.loading({
-      message: '加载中...',
-      forbidClick: true
-    });
-    const { data } = await getHome()
-    this.swiperList = data.carousels
-    this.newGoodses = data.newGoodses
-    this.hots = data.hotGoodses
-    this.recommends = data.recommendGoodses
-    Toast.clear()
+    // 画图
+    this.drawLine();
   },
   methods: {
-    pageScroll() {
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      scrollTop > 100 ? this.headerScroll = true : this.headerScroll = false
-    },
-    goToDetail(item) {
-      this.$router.push({ path: `product/${item.goodsId}` })
-    }
+    onLoad() {
+      // 异步更新数据
+      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
+      setTimeout(() => {
+        let title=['','本月末','比上月','比上季']
+        this.list.push(title);
+        let data = [          
+              ['资产管理余额','本月末','比上月','比上季'],
+              ['投入资金余额','本月末','比上月','比上季'],
+              ['因收资产余额','本月末','比上月','比上季']
+            ]
+
+        for (let i = 0; i < 4; i++) {
+          this.list.push(data[i]);
+        }
+        // 加载状态结束
+        this.loading = false;
+        // 数据全部加载完成
+        // if (this.list.length >= 40) {
+        this.finished = true;
+        // }
+      }, 1000);
+  },
+    drawLine(){
+          // 基于准备好的dom，初始化echarts实例
+          let myChart = this.$echarts.init(document.getElementById('myChart'))
+          // 绘制图表
+          myChart.setOption({
+              title: { text: '在Vue中使用echarts' },
+              tooltip: {},
+              xAxis: {
+                  data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+              },
+              yAxis: {},
+              series: [{
+                  name: '销量',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20]
+              }]
+          });
+      },
+
   }
 }
 </script>
-
 <style lang="less" scoped >
-  @import '../common/style/mixin';
-  .home-header {
-      position: fixed;
-      left: 0;
-      top: 0;
-      .wh(100%, 50px);
-      .fj();
-      line-height: 50px;
-      padding: 0 15px;
-      .boxSizing();
-      font-size: 15px;
-      color: #fff;
-      z-index: 10000;
-      .nbmenu2 {
-        color: @primary;
-      }
-      &.active {
-        background: @primary;
-        .nbmenu2 {
-          color: #fff;
-        }
-        .login {
-          color: #fff;
-        }
-      }
-
-      .header-search {
-          display: flex;
-          .wh(74%, 20px);
-          line-height: 20px;
-          margin: 10px 0;
-          padding: 5px 0;
-          color: #232326;
-          background: rgba(255, 255, 255, .7);
-          border-radius: 20px;
-          .app-name {
-              padding: 0 10px;
-              color: @primary;
-              font-size: 20px;
-              font-weight: bold;
-              border-right: 1px solid #666;
-          }
-          .icon-search {
-              padding: 0 10px;
-              font-size: 17px;
-          }
-          .search-title {
-              font-size: 12px;
-              color: #666;
-              line-height: 21px;
-          }
-      }
-      .icon-iconyonghu{
-        color: #fff;
-        font-size: 22px;
-      }
-      .login {
-        color: @primary;
-        line-height: 52px;
-        .van-icon-manager-o {
-          font-size: 20px;
-          vertical-align: -3px;
-        }
-      }
-  }
-  .category-list {
-    display: flex;
-    flex-shrink: 0;
-    flex-wrap: wrap;
-    width: 100%;
-    padding-bottom: 13px;
+@import '../common/style/mixin';
+#box{
+	/* background-color: #e59a1d; */
+	width:100%;
+	height:100%;
+	/*margin:0 auto;*/
+	margin:0 auto 0 auto;/*上 右 下 左*/
+}
+/*放图片，设置高度和图片一样高*/
+#banner{
+	/* background-color:#e59a1d; */
+	height:130px;
+}
+.category-list{
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-bottom: 13px;
     div {
       display: flex;
       flex-direction: column;
@@ -246,88 +207,43 @@ export default {
         margin: 13px auto 8px auto;
       }
     }
-  }
-  .good {
-    .good-header {
-      background: #f9f9f9;
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      color: @primary;
-      font-size: 16px;
-      font-weight: 500;
-    }
-    .good-box {
-      display: flex;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      .good-item {
-        box-sizing: border-box;
-        width: 50%;
-        border-bottom: 1PX solid #e9e9e9;
-        padding: 10px 10px;
-        img {
-          display: block;
-          width: 120px;
-          margin: 0 auto;
-        }
-        .good-desc {
-          text-align: center;
-          font-size: 14px;
-          padding: 10px 0;
-          .title {
-            color: #222333;
-          }
-          .price {
-            color: @primary;
-          }
-        }
-        &:nth-child(2n + 1) {
-          border-right: 1PX solid #e9e9e9;
-        }
-      }
-    }
-  }
-  .floor-list {
-      width: 100%;
-      padding-bottom: 50px;
-      .floor-head {
-        width: 100%;
-        height: 40px;
-        background: #F6F6F6;
-      }
-      .floor-content {
-        display: flex;
-        flex-shrink: 0;
-        flex-wrap: wrap;
-        width: 100%;
-        .boxSizing();
-        .floor-category {
-          width: 50%;
-          padding: 10px;
-          border-right: 1px solid #dcdcdc;
-          border-bottom: 1px solid #dcdcdc;
-          .boxSizing();
-          &:nth-child(2n) {
-            border-right: none;
-          }
-          p {
-            font-size: 17px;
-            color: #333;
-            &:nth-child(2) {
-              padding: 5px 0;
-              font-size: 13px;
-              color: @primary;
-            }
-          }
-          .floor-products {
-            .fj();
-            width: 100%;
-            img {
-              .wh(65px, 65px);
-            }
-          }
-      }
-    }
-  }
+}
+#main{
+	// background-color:#e59a1d;
+  width: 100%;
+	height:120px;
+  margin-bottom: 30px;
+}
+#left{
+	// background-color:#e59a1d;
+  background: -webkit-linear-gradient(top,white,rgb(211, 230, 236));
+	height:100%;
+	width:40%;
+	float:left;/*可以使div横向排排坐*/
+  border: 10px;
+  border: 10px solid transparent;
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-top-colors:#a0a #909 #808 #707 #606 #505 #404 #303;
+  -moz-border-right-colors:#a0a #909 #808 #707 #606 #505 #404 #303;
+  -moz-border-bottom-colors:#a0a #909 #808 #707 #606 #505 #404 #303;
+  -moz-border-left-colors:#a0a #909 #808 #707 #606 #505 #404 #303;
+}
+#right{
+	// background-color:#e59a1d;
+  background: -webkit-linear-gradient(top,white,lightblue);
+	height:100%;
+	width:40%;
+	float:right;/*可以使div横向排排坐*/
+  border: 10px solid transparent;
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-top-colors:#a0a #909 #808 #707 #606 #505 #404 #303;
+  -moz-border-right-colors:#a0a #909 #808 #707 #606 #505 #404 #303;
+  -moz-border-bottom-colors:#a0a #909 #808 #707 #606 #505 #404 #303;
+  -moz-border-left-colors:#a0a #909 #808 #707 #606 #505 #404 #303;
+}
+ 
+#footer{
+	background-color:#F63;
+	height:80px;
+}
 </style>
