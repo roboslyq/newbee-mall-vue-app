@@ -15,9 +15,34 @@ import store from './store'
 import { prefix } from '@/common/js/utils'
 import { Divider, Popup, Overlay, Loading, Dialog, ContactCard, Form, AddressEdit, AddressList, Field, CellGroup, Cell, SwipeCell, Icon, Stepper, Card, Checkbox, CheckboxGroup, Button, Swipe, SwipeItem, PullRefresh, List, Tab, Tabs, GoodsAction, GoodsActionIcon, GoodsActionButton, SubmitBar, Toast } from 'vant'
 import 'lib-flexible/flexible'
+// roboslyq 引入 v-charts
+import echarts from 'echarts'
+import VCharts from 'v-charts'
 
-Vue.use(Divider).use(Popup).use(Overlay).use(Loading).use(Dialog).use(Toast).use(ContactCard).use(Form).use(AddressEdit).use(AddressList).use(Field).use(CellGroup).use(Cell).use(SwipeCell).use(Icon).use(Stepper).use(Card).use(Button).use(Swipe).use(SwipeItem).use(PullRefresh).use(List).use(Tab).use(Tabs).use(GoodsAction).use(GoodsActionIcon).use(GoodsActionButton).use(SubmitBar).use(Checkbox).use(CheckboxGroup)
+Vue.use(Divider)
+    .use(Popup)
+    .use(Overlay)
+    .use(Loading)
+    .use(Dialog)
+    .use(Toast)
+    .use(ContactCard)
+    .use(Form)
+    .use(AddressEdit)
+    .use(AddressList)
+    .use(Field)
+    .use(CellGroup).use(Cell)
+    .use(SwipeCell).use(Icon)
+    .use(Stepper).use(Card)
+    .use(Button).use(Swipe)
+    .use(SwipeItem).use(PullRefresh)
+    .use(List).use(Tab)
+    .use(Tabs).use(GoodsAction)
+    .use(GoodsActionIcon).use(GoodsActionButton)
+    .use(SubmitBar).use(Checkbox).use(CheckboxGroup)
+    .use(VCharts)
+
 Vue.config.productionTip = false
+Vue.prototype.$echarts = echarts
 
 new Vue({
   router,

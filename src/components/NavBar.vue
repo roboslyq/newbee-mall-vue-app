@@ -17,11 +17,15 @@
       </router-link>
       <router-link tag="li" class="nav-list-item" to="category">
         <i class="nbicon nbfenlei"></i>
-        <span>分类</span>
+        <span>财务</span>
       </router-link>
       <router-link tag="li" class="nav-list-item" to="cart">
         <van-icon  name="shopping-cart-o" :info="!count ? '' : count" />
-        <span>购物车</span>
+        <span>业务</span>
+      </router-link>
+      <router-link tag="li" class="nav-list-item" to="cart">
+        <van-icon  name="shopping-cart-o" :info="!count ? '' : count" />
+        <span>风险</span>
       </router-link>
       <router-link tag="li" class="nav-list-item" to="user">
         <i class="nbicon nblvsefenkaicankaoxianban-"></i>
