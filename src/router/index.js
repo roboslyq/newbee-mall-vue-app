@@ -9,7 +9,7 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.bak.vue1.vue'
+import Home from '../views/Home.vue'
 import Cart from '../views/Cart.vue'
 import Category from '../views/Category.vue'
 import ProductList from '../views/ProductList.vue'
@@ -46,7 +46,7 @@ const routes = [
     meta: {
       index: 1
     },
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.bak.vue1.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
   },
   {
     path: '/cart',
