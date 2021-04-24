@@ -13,7 +13,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { prefix } from '@/common/js/utils'
-import { Divider, Popup, Overlay, Loading, Dialog, ContactCard, Form, AddressEdit, AddressList, Field, CellGroup, Cell, SwipeCell, Icon, Stepper, Card, Checkbox, CheckboxGroup, Button, Swipe, SwipeItem, PullRefresh, List, Tab, Tabs, GoodsAction, GoodsActionIcon, GoodsActionButton, SubmitBar, Toast } from 'vant'
+import { Divider, Popup, Overlay, Loading, Dialog, ContactCard, Form, AddressEdit, AddressList, Field, CellGroup, Cell, SwipeCell, Icon, Stepper, Card, Checkbox, CheckboxGroup, Button, Swipe, SwipeItem, PullRefresh, List, Tab, Tabs, GoodsAction, GoodsActionIcon, GoodsActionButton, SubmitBar, Toast ,DropdownMenu, DropdownItem} from 'vant'
 import 'lib-flexible/flexible'
 // roboslyq 引入 v-charts
 import echarts from 'echarts'
@@ -40,6 +40,8 @@ Vue.use(Divider)
     .use(GoodsActionIcon).use(GoodsActionButton)
     .use(SubmitBar).use(Checkbox).use(CheckboxGroup)
     .use(VCharts)
+    .use(DropdownMenu)
+    .use(DropdownItem)
 
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts

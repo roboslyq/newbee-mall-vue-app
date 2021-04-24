@@ -43,10 +43,59 @@
           </div>      
       </div>
       <div id="myChart" :style="{width: '300px', height: '300px' ,margin_top:'30px'}"></div>
-      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <van-cell v-for="item in list" :key="item" :title="item" />
-      </van-list>
-      <div id="footer"> footer </div>
+      <!-- Table goes in the document BODY -->
+      <div>
+        <table class="table1">
+          <thead>
+            <tr>
+              <th></th>
+              <th scope="col" abbr="Starter">本月末</th>
+              <th scope="col" abbr="Medium">比上月</th>
+              <th scope="col" abbr="Business">比上季</th>
+            </tr>
+          </thead>
+          <!-- <tfoot>
+            <tr>
+              <th scope="row">Price per month</th>
+              <td>$ 2.90</td>
+              <td>$ 5.90</td>
+              <td>$ 9.90</td>
+              <td>$ 14.90</td>
+            </tr>
+          </tfoot> -->
+          <tbody>
+            <tr>
+              <th scope="row">Storage Space</th>
+              <td>512 MB</td>
+              <td>1 GB</td>
+              <td>2 GB</td>
+            </tr>
+            <tr>
+              <th scope="row">Bandwidth</th>
+              <td>50 GB</td>
+              <td>100 GB</td>
+              <td>150 GB</td>
+            </tr>
+            <tr>
+              <th scope="row">MySQL Databases</th>
+              <td>Unlimited</td>
+              <td>Unlimited</td>
+              <td>Unlimited</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3>账务数据</h3>
+        <select v-model="queryDate">
+              <option :key="x.text" v-for="x in option1">{{x.text}}</option>
+        </select>
+      </div>
+      <div id="finance-chart-1" :style="{width: '50%', height: '100%' ,margin_top:'10'}"></div>
+      <div id="finance-chart-2" :style="{width: '50%', height: '100%' ,margin_top:'10'}"></div>
+      <div id="finance-chart-3" :style="{width: '50%', height: '100%' ,margin_top:'10'}"></div>
+      <div id="finance-chart-4" :style="{width: '50%', height: '100%' ,margin_top:'10'}"></div>
+      <div id="footer"></div>
   </div>
 </template>
 
@@ -56,18 +105,21 @@ import swiper from '@/components/Swiper'
 import { getHome } from '../service/home'
 import { getUserInfo } from '../service/user'
 import { getLocal } from '@/common/js/utils'
-import { Toast } from 'vant'
 import NavBar from '../components/NavBar.vue'
-// import { List } from 'vant';
 
 export default {
   name: 'home',
   components: {
-    navBar,
-    // List
+    navBar
   },
   data() {
     return {
+      queryDate:'',
+      option1: [
+        { text: '2021-1', value: 0 },
+        { text: '2021-2', value: 1 },
+        { text: '2021-3', value: 2 },
+      ],
       list: [],
       loading: false,
       finished: false,
@@ -172,6 +224,283 @@ export default {
                   data: [5, 20, 36, 10, 10, 20]
               }]
           });
+
+
+            // 基于准备好的dom，初始化echarts实例
+          let myChart1 = this.$echarts.init(document.getElementById('finance-chart-1'))
+          // 绘制图表
+          myChart1.setOption({
+                 series: [{
+                    type: 'gauge',
+                    startAngle: 180,
+                    endAngle: 0,
+                    min: 0,
+                    max: 1,
+                    splitNumber: 8,
+                    axisLine: {
+                        lineStyle: {
+                            width: 6,
+                            color: [
+                                [0.25, '#FF6E76'],
+                                [0.5, '#FDDD60'],
+                                [0.75, '#58D9F9'],
+                                [1, '#7CFFB2']
+                            ]
+                        }
+                    },
+                    pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '20%',
+                        width: 10,
+                        offsetCenter: [0, '-80%'],
+                        itemStyle: {
+                            color: 'red'
+                        }
+                    },
+                    axisTick: {
+                        length: 12,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 2
+                        }
+                    },
+                    splitLine: {
+                        length: 20,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 5
+                        }
+                    },
+                    axisLabel: {
+                        color: '#464646',
+                        fontSize: 12,
+                        distance: -40,
+                        formatter: function (value) {
+                            if (value === 0.875) {
+                                return '优';
+                            }
+                            else if (value === 0.625) {
+                                return '中';
+                            }
+                            else if (value === 0.375) {
+                                return '良';
+                            }
+                            else if (value === 0.125) {
+                                return '差';
+                            }
+                        }
+                    },
+                    title: {
+                        offsetCenter: [0, '-20%'],
+                        fontSize: 12
+                    },
+                    detail: {
+                        fontSize: 12,
+                        offsetCenter: [0, '0%'],
+                        valueAnimation: true,
+                        formatter: function (value) {
+                            return Math.round(value * 100) + '分';
+                        },
+                        color: 'auto'
+                    },
+                    data: [{
+                        value: 0.70,
+                        fontSize: 12,
+                        name: '成绩评定'
+                    }]
+                }]
+          });
+
+
+ // 基于准备好的dom，初始化echarts实例
+          let myChart2= this.$echarts.init(document.getElementById('finance-chart-2'))
+          // 绘制图表
+          myChart2.setOption({
+                 series: [{
+                      type: 'gauge',
+                      progress: {
+                          show: true,
+                          width: 18
+                      },
+                      axisLine: {
+                          lineStyle: {
+                              width: 18
+                          }
+                      },
+                      axisTick: {
+                          show: false
+                      },
+                      splitLine: {
+                          length: 15,
+                          lineStyle: {
+                              width: 2,
+                              color: '#999'
+                          }
+                      },
+                      axisLabel: {
+                          distance: 25,
+                          color: '#999',
+                          fontSize: 20
+                      },
+                      anchor: {
+                          show: true,
+                          showAbove: true,
+                          size: 25,
+                          itemStyle: {
+                              borderWidth: 10
+                          }
+                      },
+                      title: {
+                          show: false
+                      },
+                      detail: {
+                          valueAnimation: true,
+                          fontSize: 80,
+                          offsetCenter: [0, '70%']
+                      },
+                      data: [{
+                          value: 70
+                      }]
+                  }]})
+
+  
+ // 基于准备好的dom，初始化echarts实例
+          let myChart3 = this.$echarts.init(document.getElementById('finance-chart-3'))
+          // 绘制图表
+          myChart3.setOption({
+                 series: [{
+                      type: 'gauge',
+                      progress: {
+                          show: true,
+                          width: 18
+                      },
+                      axisLine: {
+                          lineStyle: {
+                              width: 18
+                          }
+                      },
+                      axisTick: {
+                          show: false
+                      },
+                      splitLine: {
+                          length: 15,
+                          lineStyle: {
+                              width: 2,
+                              color: '#999'
+                          }
+                      },
+                      axisLabel: {
+                          distance: 25,
+                          color: '#999',
+                          fontSize: 20
+                      },
+                      anchor: {
+                          show: true,
+                          showAbove: true,
+                          size: 25,
+                          itemStyle: {
+                              borderWidth: 10
+                          }
+                      },
+                      title: {
+                          show: false
+                      },
+                      detail: {
+                          valueAnimation: true,
+                          fontSize: 80,
+                          offsetCenter: [0, '70%']
+                      },
+                      data: [{
+                          value: 70
+                      }]
+                  }]})
+
+
+            // 基于准备好的dom，初始化echarts实例
+          let myChart4 = this.$echarts.init(document.getElementById('finance-chart-4'))
+          // 绘制图表
+          myChart4.setOption({
+                 series: [{
+                    type: 'gauge',
+                    startAngle: 180,
+                    endAngle: 0,
+                    min: 0,
+                    max: 1,
+                    splitNumber: 8,
+                    axisLine: {
+                        lineStyle: {
+                            width: 6,
+                            color: [
+                                [0.25, '#FF6E76'],
+                                [0.5, '#FDDD60'],
+                                [0.75, '#58D9F9'],
+                                [1, '#7CFFB2']
+                            ]
+                        }
+                    },
+                    pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '20%',
+                        width: 10,
+                        offsetCenter: [0, '-10%'],
+                        itemStyle: {
+                            color: 'red'
+                        }
+                    },
+                    axisTick: {
+                        length: 12,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 2
+                        }
+                    },
+                    splitLine: {
+                        length: 20,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 5
+                        }
+                    },
+                    axisLabel: {
+                        color: '#464646',
+                        fontSize: 12,
+                        distance: -40,
+                        formatter: function (value) {
+                            if (value === 0.875) {
+                                return '优';
+                            }
+                            else if (value === 0.625) {
+                                return '中';
+                            }
+                            else if (value === 0.375) {
+                                return '良';
+                            }
+                            else if (value === 0.125) {
+                                return '差';
+                            }
+                        }
+                    },
+                    title: {
+                        offsetCenter: [0, '-20%'],
+                        fontSize: 12
+                    },
+                    detail: {
+                        fontSize: 12,
+                        offsetCenter: [0, '0%'],
+                        valueAnimation: true,
+                        formatter: function (value) {
+                            return Math.round(value * 100) + '分';
+                        },
+                        color: 'auto'
+                    },
+                    data: [{
+                        value: 0.70,
+                        fontSize: 12,
+                        name: '成绩评定'
+                    }]
+                }]
+          });
+
       },
 
   }
@@ -243,7 +572,108 @@ export default {
 }
  
 #footer{
-	background-color:#F63;
+	background-color:rgb(160, 217, 243);
 	height:80px;
 }
+
+#finace-data{
+      width: 100%;
+      // margin: 10px;
+      height: 30px;
+      background: linear-gradient(90deg, @primary, #51c7c7);
+      box-shadow: 0 2px 5px #269090;
+      border-radius: 6px;
+      margin-top: 50px;
+    }
+table.table1{
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.4em;
+    font-style: normal;
+    border-collapse:separate;
+    width: 100%;
+}
+.table1 thead th{
+    padding:2px;
+    color:rgb(15, 14, 14);
+    text-shadow:1px 1px 1px#f4f7ef;
+    border:1px solid #f4f7ef;
+    border-bottom:1px solid #f4f7ef;
+    background-color:#f4f7ef;
+    background:-webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.02, #f4f7ef;),
+        color-stop(0.51, #f4f7ef;),
+        color-stop(0.87,#f4f7ef;)
+        );
+    background: -moz-linear-gradient(
+        center bottom,
+        #f4f7ef; 2%,
+       #f4f7ef; 51%,
+       #f4f7ef; 87%
+        );
+    -webkit-border-top-left-radius:2px;
+    -webkit-border-top-right-radius:2px;
+    -moz-border-radius:2px 2px 0px 0px;
+    border-top-left-radius:2px;
+    border-top-right-radius:2px;
+}
+.table1 thead th:empty{
+    background:transparent;
+    border:none;
+}
+.table1 tbody th{
+    color:rgb(15, 14, 14);
+    text-shadow:1px 1px 1px#f4f7ef;
+    background-color:#f4f7ef;
+    border:1px solid#f4f7ef;
+    border-right:2px solid#f4f7ef;;
+    padding:0px 5px;
+    background:-webkit-gradient(
+        linear,
+        left bottom,
+        right top,
+        color-stop(0.02, #f4f7ef;),
+        color-stop(0.51, #f4f7ef;),
+        color-stop(0.87, #f4f7ef;)
+        );
+    background: -moz-linear-gradient(
+        left bottom,
+         #f4f7ef; 2%,
+        #f4f7ef; 51%,
+       #f4f7ef; 87%
+        );
+    -moz-border-radius:2px 0px 0px 2px;
+    -webkit-border-top-left-radius:2px;
+    -webkit-border-bottom-left-radius:2px;
+    border-top-left-radius:2px;
+    border-bottom-left-radius:2px;
+}
+.table1 tfoot td{
+    color: #f4f7ef;
+    font-size:32px;
+    text-align:center;
+    padding:10px 0px;
+    text-shadow:1px 1px 1px #444;
+}
+.table1 tfoot th{
+    color:#666;
+}
+.table1 tbody td{
+    padding:10px;
+    text-align:center;
+    background-color:#DEF3CA;
+    border: 2px solid #E7EFE0;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:2px;
+    color:#666;
+    text-shadow:1px 1px 1px #fff;
+}
+// .table1 tbody span.check::before{
+//     content : url(../images/check0.png)
+// }
 </style>
