@@ -14,14 +14,22 @@
       <div id="banner">
         <img src="../assets/gzzc.jpg" alt="广州资产" width="100%" height="100%"/>
       </div>
-      <div class="category-list">
+      <!-- <div class="category-list">
           <div v-for="item in categoryList" v-bind:key="item.categoryId">
             <img :src="item.imgUrl">
             <span>{{item.name}}</span>
           </div>
+      </div> -->
+      <!--业务数据开始 -->
+      <div style="margin-bottom:50px;">
+        <div class="left2" style="font-size:16px;line-height:30px">业务数据</div>
+        <div class="right2" style="line-height:30px">
+          <select v-model="queryDate">
+              <option :key="x.text" v-for="x in option1">{{x.text}}</option>
+          </select>
+        </div>
       </div>
-      <br/>
-      <div id="main">
+      <div id="busi-box">
         <!--左边区域-->
         <div id="left">
            <div>业务规模</div>
@@ -44,7 +52,7 @@
       </div>
       <div id="myChart" :style="{width: '300px', height: '300px' ,margin_top:'30px'}"></div>
       <!-- Table goes in the document BODY -->
-      <div>
+      <div style="margin-bottom:50px;">
         <table class="table1">
           <thead>
             <tr>
@@ -54,30 +62,98 @@
               <th scope="col" abbr="Business">比上季</th>
             </tr>
           </thead>
-          <!-- <tfoot>
-            <tr>
-              <th scope="row">Price per month</th>
-              <td>$ 2.90</td>
-              <td>$ 5.90</td>
-              <td>$ 9.90</td>
-              <td>$ 14.90</td>
-            </tr>
-          </tfoot> -->
           <tbody>
             <tr>
-              <th scope="row">Storage Space</th>
+              <th scope="row">资产管理余额</th>
+              <td>512.00</td>
+              <td>512.00</td>
+              <td>512.00</td>
+            </tr>
+            <tr>
+              <th scope="row">投入资金余额</th>
+              <td>512.00</td>
+              <td>512.00</td>
+              <td>512.00</td>
+            </tr>
+            <tr>
+              <th scope="row">固收资产余额</th>
+              <td>512.00</td>
+              <td>512.00</td>
+              <td>512.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--  账务数据开始 -->
+      <div style="margin-bottom:50px;">
+        <div class="left2" style="font-size:16px">账务数据</div>
+        <div class="right2">
+          <select v-model="queryDate">
+              <option :key="x.text" v-for="x in option1">{{x.text}}</option>
+          </select>  
+        </div>
+      </div>
+      <div class="finance-chart">
+        <div id="finance-chart-1"  :style="{width: '25%', height: '100%'}"></div>
+        <div id="finance-chart-2"  :style="{width: '25%', height: '100%'}"></div>
+        <div id="finance-chart-3"  :style="{width: '25%', height: '100%'}"></div>
+        <div id="finance-chart-4"  :style="{width: '25%', height: '100%'}"></div>
+      </div>
+      <!-- 资产数据 -->
+      <div>
+        <div style="width: 50%;float:left;height: 100%; ">
+            <div style="width: 50%;float:left;height: 100%; backgroud:white;">2347.1<br/>总资产:</div>
+            <div style="width: 50%;float:right;height: 100%; "> 
+              <div>比上日: yyy</div>
+              <div>比上月:xxxxx</div>
+            </div>
+        </div>
+        <div style="width: 50%;float:left;height: 100%; ">
+            <div style="width: 50%;float:left;height: 100%; ">2347.1<br/>净资产:</div>
+            <div style="width: 50%;float:right;height: 100%; "> 
+              <div>比上日: yyy</div>
+              <div>比上月:xxxxx</div>
+            </div>
+        </div>
+      </div>
+ <!-- 财务收支 -->
+      <div>
+        <table class="table1">
+          <thead>
+            <tr>
+              <th>财务收支</th>
+              <th scope="col" abbr="Starter">当月</th>
+              <th scope="col" abbr="Medium">当季</th>
+              <th scope="col" abbr="Business">当年</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">营收总收</th>
               <td>512 MB</td>
               <td>1 GB</td>
               <td>2 GB</td>
             </tr>
             <tr>
-              <th scope="row">Bandwidth</th>
+              <th scope="row">营收收入</th>
               <td>50 GB</td>
               <td>100 GB</td>
               <td>150 GB</td>
             </tr>
             <tr>
-              <th scope="row">MySQL Databases</th>
+              <th scope="row">利息支出</th>
+              <td>Unlimited</td>
+              <td>Unlimited</td>
+              <td>Unlimited</td>
+            </tr>
+            <tr>
+              <th scope="row">利润总额</th>
+              <td>Unlimited</td>
+              <td>Unlimited</td>
+              <td>Unlimited</td>
+            </tr>
+            <tr>
+              <th scope="row">净利润</th>
               <td>Unlimited</td>
               <td>Unlimited</td>
               <td>Unlimited</td>
@@ -85,18 +161,51 @@
           </tbody>
         </table>
       </div>
-      <div>
-        <h3>账务数据</h3>
-        <select v-model="queryDate">
+     <!--  资金数据 -->
+      <div style="margin-bottom:50px;">
+        <div class="left2">资金数据</div>
+        <div class="right2">
+          <select v-model="queryDate">
               <option :key="x.text" v-for="x in option1">{{x.text}}</option>
-        </select>
+          </select>  
+        </div>
       </div>
-      <div id="finance-chart-1" :style="{width: '50%', height: '100%' ,margin_top:'10'}"></div>
-      <div id="finance-chart-2" :style="{width: '50%', height: '100%' ,margin_top:'10'}"></div>
-      <div id="finance-chart-3" :style="{width: '50%', height: '100%' ,margin_top:'10'}"></div>
-      <div id="finance-chart-4" :style="{width: '50%', height: '100%' ,margin_top:'10'}"></div>
+      <div style="width:100%;height:200px;margin-bottom:50px;">
+          <div style="width: 48%;	height: 50%;float: left; border:1px solid #1baeae;margin:2px;">
+            <div>授信额度</div>
+            <div style="font-size:24px;color:blue;">999.9亿</div>
+          </div>
+          <div style="width: 48%;	height: 50%;float: right;left; border:1px solid #1baeae;margin:2px;">
+
+            <div>融资余额</div>
+            <div style="font-size:24px;color:blue;">999.9亿</div>
+          </div>
+          <div style="width: 48%;	height: 50%;float: left;left; border:1px solid #1baeae;margin:2px;">
+            <div>新增借款加权综合融资成本</div>
+            <div style="font-size:24px;color:blue;">999.9亿</div>
+          </div>
+          <div style="width: 48%;	height: 50%;float: right;left; border:1px solid #1baeae;margin:2px;">
+            <div>年末加权综合融资成本</div>
+            <div style="font-size:24px;color:blue;">999.9亿</div>
+          </div>
+      </div>
+       <!-- 风险指标数据开始 -->
+      <div style="margin-bottom:50px;">
+        <div class="left2" style="font-size:16px;line-height:30px">风险指标</div>
+        <div class="right2" style="line-height:30px">
+          <select v-model="queryDate">
+              <option :key="x.text" v-for="x in option1">{{x.text}}</option>
+          </select>  
+        </div>
+      </div>
+      <div class="riskIndicator-chart">
+        <div id="riskIndicator-chart-1"  :style="{width: '25%', height: '100%'}"></div>
+        <div id="riskIndicator-chart-2"  :style="{width: '25%', height: '100%'}"></div>
+        <div id="riskIndicator-chart-3"  :style="{width: '25%', height: '100%'}"></div>
+      </div> 
       <div id="footer"></div>
-  </div>
+      <!-- <div></div> -->
+    </div>
 </template>
 
 <script>
@@ -115,10 +224,17 @@ export default {
   data() {
     return {
       queryDate:'',
+      value1: 0,
+      value2: 'a',
       option1: [
-        { text: '2021-1', value: 0 },
-        { text: '2021-2', value: 1 },
-        { text: '2021-3', value: 2 },
+        { text: '全部商品', value: 0 },
+        { text: '新款商品', value: 1 },
+        { text: '活动商品', value: 2 },
+      ],
+      option2: [
+        { text: '默认排序', value: 'a' },
+        { text: '好评排序', value: 'b' },
+        { text: '销量排序', value: 'c' },
       ],
       list: [],
       loading: false,
@@ -131,39 +247,39 @@ export default {
       recommends: [],
       categoryList: [
           {
-            name: '新蜂超市',
+            name: '测试功能1',
             imgUrl: '//s.weituibao.com/1583585285461/cs.png',
             categoryId: 100001
           }, {
-            name: '新蜂服饰',
+            name: '测试功能2',
             imgUrl: '//s.weituibao.com/1583585285468/fs.png',
             categoryId: 100003
           }, {
-            name: '全球购',
+            name: '测试功能3',
             imgUrl: '//s.weituibao.com/1583585285470/qq.png',
             categoryId: 100002
           }, {
-            name: '新蜂生鲜',
+            name: '测试功能4',
             imgUrl: '//s.weituibao.com/1583585285472/sx.png',
             categoryId: 100004
           }, {
-            name: '新蜂到家',
+            name: '测试功能5',
             imgUrl: '//s.weituibao.com/1583585285467/dj.png',
             categoryId: 100005
           }, {
-            name: '充值缴费',
+            name: '测试功能6',
             imgUrl: '//s.weituibao.com/1583585285465/cz.png',
             categoryId: 100006
           }, {
-            name: '9.9元拼',
+            name: '测试功能7',
             imgUrl: '//s.weituibao.com/1583585285469/pt.png',
             categoryId: 100007
           }, {
-            name: '领劵',
+            name: '测试功能8',
             imgUrl: '//s.weituibao.com/1583585285468/juan.png',
             categoryId: 100008
           }, {
-            name: '省钱',
+            name: '测试功能9',
             imgUrl: '//s.weituibao.com/1583585285471/sq.png',
             categoryId: 100009
           }, {
@@ -212,7 +328,7 @@ export default {
           let myChart = this.$echarts.init(document.getElementById('myChart'))
           // 绘制图表
           myChart.setOption({
-              title: { text: '在Vue中使用echarts' },
+              title: { text: '业务数据' },
               tooltip: {},
               xAxis: {
                   data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
@@ -251,7 +367,7 @@ export default {
                     pointer: {
                         icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
                         length: '20%',
-                        width: 10,
+                        width: 2,
                         offsetCenter: [0, '-80%'],
                         itemStyle: {
                             color: 'red'
@@ -273,8 +389,8 @@ export default {
                     },
                     axisLabel: {
                         color: '#464646',
-                        fontSize: 12,
-                        distance: -40,
+                        fontSize: 5,
+                        distance: -30,
                         formatter: function (value) {
                             if (value === 0.875) {
                                 return '优';
@@ -292,10 +408,10 @@ export default {
                     },
                     title: {
                         offsetCenter: [0, '-20%'],
-                        fontSize: 12
+                        fontSize: 5
                     },
                     detail: {
-                        fontSize: 12,
+                        fontSize: 5,
                         offsetCenter: [0, '0%'],
                         valueAnimation: true,
                         formatter: function (value) {
@@ -305,7 +421,7 @@ export default {
                     },
                     data: [{
                         value: 0.70,
-                        fontSize: 12,
+                        fontSize: 5,
                         name: '成绩评定'
                     }]
                 }]
@@ -318,6 +434,15 @@ export default {
           myChart2.setOption({
                  series: [{
                       type: 'gauge',
+                      pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '20%',
+                        width: 2,
+                        offsetCenter: [0, '-80%'],
+                        itemStyle: {
+                            color: 'red'
+                        }
+                      },
                       progress: {
                           show: true,
                           width: 18
@@ -340,14 +465,14 @@ export default {
                       axisLabel: {
                           distance: 25,
                           color: '#999',
-                          fontSize: 20
+                          fontSize: 5
                       },
                       anchor: {
                           show: true,
                           showAbove: true,
-                          size: 25,
+                          size: 5,
                           itemStyle: {
-                              borderWidth: 10
+                              borderWidth: 2
                           }
                       },
                       title: {
@@ -355,7 +480,7 @@ export default {
                       },
                       detail: {
                           valueAnimation: true,
-                          fontSize: 80,
+                          fontSize: 5,
                           offsetCenter: [0, '70%']
                       },
                       data: [{
@@ -367,12 +492,21 @@ export default {
  // 基于准备好的dom，初始化echarts实例
           let myChart3 = this.$echarts.init(document.getElementById('finance-chart-3'))
           // 绘制图表
-          myChart3.setOption({
+         myChart3.setOption({
                  series: [{
                       type: 'gauge',
                       progress: {
                           show: true,
                           width: 18
+                      },
+                      pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '20%',
+                        width: 2,
+                        offsetCenter: [0, '-80%'],
+                        itemStyle: {
+                            color: 'red'
+                        }
                       },
                       axisLine: {
                           lineStyle: {
@@ -392,14 +526,14 @@ export default {
                       axisLabel: {
                           distance: 25,
                           color: '#999',
-                          fontSize: 20
+                          fontSize: 5
                       },
                       anchor: {
                           show: true,
                           showAbove: true,
-                          size: 25,
+                          size: 5,
                           itemStyle: {
-                              borderWidth: 10
+                              borderWidth: 2
                           }
                       },
                       title: {
@@ -407,7 +541,7 @@ export default {
                       },
                       detail: {
                           valueAnimation: true,
-                          fontSize: 80,
+                          fontSize: 5,
                           offsetCenter: [0, '70%']
                       },
                       data: [{
@@ -441,8 +575,8 @@ export default {
                     pointer: {
                         icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
                         length: '20%',
-                        width: 10,
-                        offsetCenter: [0, '-10%'],
+                        width: 2,
+                        offsetCenter: [0, '-80%'],
                         itemStyle: {
                             color: 'red'
                         }
@@ -463,8 +597,8 @@ export default {
                     },
                     axisLabel: {
                         color: '#464646',
-                        fontSize: 12,
-                        distance: -40,
+                        fontSize: 5,
+                        distance: -30,
                         formatter: function (value) {
                             if (value === 0.875) {
                                 return '优';
@@ -482,10 +616,10 @@ export default {
                     },
                     title: {
                         offsetCenter: [0, '-20%'],
-                        fontSize: 12
+                        fontSize: 5
                     },
                     detail: {
-                        fontSize: 12,
+                        fontSize: 5,
                         offsetCenter: [0, '0%'],
                         valueAnimation: true,
                         formatter: function (value) {
@@ -495,11 +629,219 @@ export default {
                     },
                     data: [{
                         value: 0.70,
-                        fontSize: 12,
+                        fontSize: 5,
                         name: '成绩评定'
                     }]
                 }]
           });
+
+
+             // 基于准备好的dom，初始化echarts实例
+          let riskIndicator1 = this.$echarts.init(document.getElementById('riskIndicator-chart-1'))
+          // 绘制图表
+          riskIndicator1.setOption({
+                 series: [{
+                    type: 'gauge',
+                    startAngle: 180,
+                    endAngle: 0,
+                    min: 0,
+                    max: 1,
+                    splitNumber: 8,
+                    axisLine: {
+                        lineStyle: {
+                            width: 6,
+                            color: [
+                                [0.25, '#FF6E76'],
+                                [0.5, '#FDDD60'],
+                                [0.75, '#58D9F9'],
+                                [1, '#7CFFB2']
+                            ]
+                        }
+                    },
+                    pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '20%',
+                        width: 2,
+                        offsetCenter: [0, '-80%'],
+                        itemStyle: {
+                            color: 'red'
+                        }
+                    },
+                    axisTick: {
+                        length: 12,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 2
+                        }
+                    },
+                    splitLine: {
+                        length: 20,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 5
+                        }
+                    },
+                    axisLabel: {
+                        color: '#464646',
+                        fontSize: 5,
+                        distance: -30,
+                        formatter: function (value) {
+                            if (value === 0.875) {
+                                return '优';
+                            }
+                            else if (value === 0.625) {
+                                return '中';
+                            }
+                            else if (value === 0.375) {
+                                return '良';
+                            }
+                            else if (value === 0.125) {
+                                return '差';
+                            }
+                        }
+                    },
+                    title: {
+                        offsetCenter: [0, '-20%'],
+                        fontSize: 5
+                    },
+                    detail: {
+                        fontSize: 5,
+                        offsetCenter: [0, '0%'],
+                        valueAnimation: true,
+                        formatter: function (value) {
+                            return Math.round(value * 100) + '分';
+                        },
+                        color: 'auto'
+                    },
+                    data: [{
+                        value: 0.70,
+                        fontSize: 5,
+                        name: '成绩评定'
+                    }]
+                }]
+          });
+
+
+ // 基于准备好的dom，初始化echarts实例
+          let riskIndicator2= this.$echarts.init(document.getElementById('riskIndicator-chart-2'))
+          // 绘制图表
+          riskIndicator2.setOption({
+                 series: [{
+                      type: 'gauge',
+                      pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '20%',
+                        width: 2,
+                        offsetCenter: [0, '-80%'],
+                        itemStyle: {
+                            color: 'red'
+                        }
+                      },
+                      progress: {
+                          show: true,
+                          width: 18
+                      },
+                      axisLine: {
+                          lineStyle: {
+                              width: 18
+                          }
+                      },
+                      axisTick: {
+                          show: false
+                      },
+                      splitLine: {
+                          length: 15,
+                          lineStyle: {
+                              width: 2,
+                              color: '#999'
+                          }
+                      },
+                      axisLabel: {
+                          distance: 25,
+                          color: '#999',
+                          fontSize: 5
+                      },
+                      anchor: {
+                          show: true,
+                          showAbove: true,
+                          size: 5,
+                          itemStyle: {
+                              borderWidth: 2
+                          }
+                      },
+                      title: {
+                          show: false
+                      },
+                      detail: {
+                          valueAnimation: true,
+                          fontSize: 5,
+                          offsetCenter: [0, '70%']
+                      },
+                      data: [{
+                          value: 70
+                      }]
+                  }]})
+
+  
+ // 基于准备好的dom，初始化echarts实例
+          let riskIndicator3 = this.$echarts.init(document.getElementById('riskIndicator-chart-3'))
+          // 绘制图表
+         riskIndicator3.setOption({
+                 series: [{
+                      type: 'gauge',
+                      progress: {
+                          show: true,
+                          width: 18
+                      },
+                      pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '20%',
+                        width: 2,
+                        offsetCenter: [0, '-80%'],
+                        itemStyle: {
+                            color: 'red'
+                        }
+                      },
+                      axisLine: {
+                          lineStyle: {
+                              width: 18
+                          }
+                      },
+                      axisTick: {
+                          show: false
+                      },
+                      splitLine: {
+                          length: 15,
+                          lineStyle: {
+                              width: 2,
+                              color: '#999'
+                          }
+                      },
+                      axisLabel: {
+                          distance: 25,
+                          color: '#999',
+                          fontSize: 5
+                      },
+                      anchor: {
+                          show: true,
+                          showAbove: true,
+                          size: 5,
+                          itemStyle: {
+                              borderWidth: 2
+                          }
+                      },
+                      title: {
+                          show: false
+                      },
+                      detail: {
+                          valueAnimation: true,
+                          fontSize: 5,
+                          offsetCenter: [0, '70%']
+                      },
+                      data: [{
+                          value: 70
+                      }]
+                  }]})
 
       },
 
@@ -519,6 +861,7 @@ export default {
 #banner{
 	/* background-color:#e59a1d; */
 	height:130px;
+  margin-bottom: 5px;
 }
 .category-list{
   display: flex;
@@ -526,6 +869,10 @@ export default {
   flex-wrap: wrap;
   width: 100%;
   padding-bottom: 13px;
+  border-bottom:thick dotted #1BAEAE;
+  // margin-bottom: 2px ;
+  // border-bottom: 20px ;
+  // border-bottom-color: seagreen;
     div {
       display: flex;
       flex-direction: column;
@@ -537,7 +884,7 @@ export default {
       }
     }
 }
-#main{
+#busi-box{
 	// background-color:#e59a1d;
   width: 100%;
 	height:120px;
@@ -572,7 +919,7 @@ export default {
 }
  
 #footer{
-	background-color:rgb(160, 217, 243);
+	background-color:white;
 	height:80px;
 }
 
@@ -675,5 +1022,94 @@ table.table1{
 }
 // .table1 tbody span.check::before{
 //     content : url(../images/check0.png)
+// }
+.left2{
+  background: #1baeae;
+  height:100%;
+	width:50%;
+	float:left;/*可以使div横向排排坐*/
+  margin-bottom: 5px;
+}
+.right2{
+  background: #1baeae;
+  height:100%;
+	width:50%;
+	float:right;/*可以使div横向排排坐*/
+  // border: 10px solid transparent;
+}
+
+.finance-chart{
+  height: 100px;
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: row;
+  width: 100%;
+  div {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    text-align: center;
+    justify-content: center;
+    align-items: flex-end;
+  }
+}
+
+
+.riskIndicator-chart{
+  height: 100px;
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: row;
+  width: 100%;
+  div {
+    display: flex;
+    flex-direction: column;
+    width: 33.3%;
+    text-align: center;
+    justify-content: center;
+    align-items: flex-end;
+  }
+}
+.assets{
+  display: flex;
+  flex-shrink: 0;
+  height: 100px;
+  flex-wrap: row;
+  // width: 100%;
+}
+.assets-1{
+  display: flex;
+  flex-shrink: 0;
+  height: 100px;
+  flex-wrap: row;
+  width: 50%;
+  div {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    text-align: center;
+  }
+}
+
+// .amount-busi-box{
+//   display: flex;
+//   flex-shrink: 0;
+//   height: 100px;
+//   flex-wrap: wrap;
+//   width: 100%;
+//   div {
+//     display: flex;
+//     flex-direction: row;
+//     width: 50%;
+//     text-align: center;
+//   }
+// }
+
+// .amount-busi-box-1{
+//     display: flex;
+//     flex-flow: column; //垂直排列
+//     justify-content: space-between;//两端对齐
+//     width: 100%;
+//     height: 100%;
 // }
 </style>
